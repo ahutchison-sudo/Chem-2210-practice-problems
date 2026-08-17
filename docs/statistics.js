@@ -69,6 +69,7 @@
     if(problem.type === "ci") { const m=text.match(/^\s*([+-]?(?:\d*\.)?\d+)\s*(?:\+\/-|±)\s*([+-]?(?:\d*\.)?\d+)\s*$/); const ok=m&&Math.abs(+m[1]-problem.final.value)<=Math.max(Math.abs(problem.final.value)*.012,.002)&&Math.abs(+m[2]-problem.final.error)<=Math.max(Math.abs(problem.final.error)*.08,.002); checked(ok,ok?"Correct - the mean and 95% confidence interval are consistent.":"Enter both parts as mean +/- confidence interval. Check t, s, and final rounding."); }
     else { const m=text.match(/^\s*([+-]?(?:\d*\.)?\d+)\s*[,; ]\s*(yes|no)\s*$/i); const ok=m&&Math.abs(+m[1]-problem.g)<=.03&&((m[2].toLowerCase()==="yes")===problem.outlier); checked(ok,ok?"Correct - your G calculation and decision agree.":"Enter G followed by yes or no. Compare G with the table's 95% critical value."); }
   };
+  $("#new").onclick=null;
   $("#new").addEventListener("click",()=>{if(document.querySelector("[data-statistics-topic].active")) show();});
   document.querySelector("[data-statistics-topic]").onclick=show;
 })();
