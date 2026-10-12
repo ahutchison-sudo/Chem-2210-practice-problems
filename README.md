@@ -98,3 +98,47 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)
 - [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+
+## CHEM 2210 acid-base titration practice
+
+The GitHub Pages practice app is in `docs/index.html`. Its acid-base titration
+module (`docs/acidbase-titrations.js`) covers a weak monoprotic acid titrated with
+NaOH, a weak monoprotic base titrated with HCl, and a diprotic acid titrated with
+NaOH. The generated regions are buffer, equivalence and excess titrant; the
+calculator also supports initial solutions and arbitrary titrant volumes.
+
+All answers assume ideal concentration equilibria at 25 °C, with Kw = 1e-14.
+Total solution volume includes titrant. The calculation solves electroneutrality
+with analyte mass balance and water autoionization, using log-space bisection.
+For a weak base, the conjugate-acid Ka is Kw/Kb. At weak-acid equivalence,
+the conjugate-base Kb is Kw/Ka, not the original acid's Ka.
+
+For diprotic acids both dissociations are included. In particular, the supplied
+Ka1 = 0.059 is comparable to the analytical concentration: using stoichiometric
+mole ratios for the first buffer, or simply averaging pKa1 and pKa2 at the first
+equivalence point, is inaccurate. With 50.0 mL of 0.100 M H2A and 0.200 M NaOH,
+Ka1 = 0.059 and Ka2 = 6.4e-5, the full equilibrium gives pH 1.755 at 13.75 mL
+and 2.856 at 25.0 mL (the old approximations gave 1.316 and 2.712).
+The second buffer, second equivalence and excess branches are also evaluated
+with the complete equilibrium, preserving their limiting textbook behavior.
+Worked solutions identify the region and show the equations used.
+
+Non-equivalence answers use the two-decimal titrant volume shown in the prompt.
+Equivalence questions explicitly specify the equivalence point, marking the
+printed volume as approximate, and use the exact stoichiometric volume.
+
+Run the dependency-free chemistry regression suite with:
+
+```bash
+npm run test:titrations
+```
+
+It checks independently calculated cubic/quartic reference roots, initial,
+buffer, half-equivalence, equivalence and excess regions, dilute solutions,
+curve continuity, species balances, all generated regions, prompt/solution
+consistency and browser grading. `npm test` runs these checks before the
+existing build and rendered-page tests. GitHub Actions runs the chemistry suite
+on pushes and pull requests.
+
+Reference for the full diprotic equilibrium model:
+[Morales and Arango, Geometric-algebraic approach to aqueous solutions of diprotic acids and its buffer mixtures](https://arxiv.org/abs/2309.17387).
